@@ -1,26 +1,23 @@
 import { model, Schema, Document } from "mongoose";
 
-export interface IAd extends Document {
+export interface IProperty extends Document {
   name: string;
   description: string;
   currency: string;
   price: number;
-  photos: [];
+  photo: string;
+  gallery: string[];
   amenities: [];
 }
 
-const adSchema = new Schema(
+const propertySchema = new Schema(
   {
     name: { type: String, required: true },
     description: { type: String },
-    currency: { type: String },
-    price: { type: Number },
-    photos: [
-      {
-        ref: "Photo",
-        type: Schema.Types.ObjectId,
-      },
-    ],
+    currency: { type: String, required: true },
+    price: { type: String, required: true },
+    photo: { type: String, required: true },
+    photos: { type: Array as () => String[] },
     amenities: [
       {
         ref: "Amenity",
@@ -34,4 +31,4 @@ const adSchema = new Schema(
   }
 );
 
-export default model<IAd>("Ad", adSchema);
+export default model<IProperty>("Property", propertySchema);
