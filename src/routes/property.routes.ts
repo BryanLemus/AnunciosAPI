@@ -4,8 +4,13 @@ import multer from "../libs/multer";
 
 const router = Router();
 
+// Get all properties
 router.get("/", propertyController.getProperties);
-router.get("/:id", propertyController.getPropertyById);
+
+// Get Property by Id
+router.get("/:propertyId", propertyController.getPropertyById);
+
+// Create property
 router.post(
   "/",
   multer.fields([
@@ -14,7 +19,11 @@ router.post(
   ]),
   propertyController.createProperty
 );
-router.put("/:id", propertyController.editProperty);
-router.delete("/:id", propertyController.deleteProperty);
+
+// Edit property by Id
+router.put("/:propertyId", propertyController.editProperty);
+
+// Delete property by Id
+router.delete("/:propertyId", propertyController.deleteProperty);
 
 export default router;

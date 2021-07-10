@@ -78,7 +78,7 @@ export const login = async (res: Response, req: Request) => {
     return res.status(400).json({ msg: "The User does not exists" });
   }
 
-  let isMatch = await User.comparePassword(req.body.password);
+  let isMatch = await user.comparePassword(req.body.password);
   if (isMatch) {
     return res.status(200).json({ token: createToken(user) });
   }
