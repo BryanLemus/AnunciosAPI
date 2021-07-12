@@ -1,47 +1,31 @@
-import { Request, Response } from "express";
-import Property from "../models/properties";
+import {Request, Response} from "express";
+import Property from "../models/properties"
+import multer from "../libs/multer";
+import {Multer} from "multer";
 
-export const createProperty = async (res: Response, req: Request) => {
-  const { name, description, currency, price, photo } = req.body;
-  console.log(req.files);
-  const newProperty = new Property({
-    name,
-    description,
-    currency,
-    price,
-    photo
-  });
-  const propertySaved = await newProperty
-    .save()
-    .then(() => {
-      res.status(201).json(propertySaved);
-    })
-    .catch((e) => {
-      res.status(400).send("Failed to save the property");
-      console.error(e);
-    });
+export const getProperties = async (req: Request, res: Response) => {
+    const properties = await Property.find();
+    res.status(200).json(properties);
 };
 
-export const getProperties = async (res: Response, req: Request) => {
-  const products = await Property.find();
-  return res.json(products);
-};
+export const createProperty = async (req: Request, res: Response) => {
+    /**
+     * Get fields from request
+     */
+    const {name, description, currency, price} = req.body;
+    const fields = req.files;
+    console.debug(fields); // TODO: How get fieldsnames
+    /**
+     * Validate empty fields
+     */
+    if (!name || !description || !currency || !price)
+        return res.status(400).send("Complete all fields");
 
-export const getPropertyById = async (res: Response, req: Request) => {
-  const product = await Property.findById(req.params.id);
-  return res.json(product);
-};
+    /**
+     * Create new property
+     */
+    const newProperty = new Property({name, description, currency, price});
+    await newProperty.save();
 
-export const editProperty = async (res: Response, req: Request) => {
-  const updatedProperty = await Property.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    { new: true }
-  );
-  res.status(200).json(updatedProperty);
-};
-
-export const deleteProperty = async (res: Response, req: Request) => {
-  await Property.findByIdAndDelete(req.params.id);
-  res.status(204).json();
+    res.status(200).json(newProperty);
 };

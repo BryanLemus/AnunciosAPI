@@ -7,7 +7,9 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     cb(null, uuid() + path.extname(file.originalname));
   },
-
 });
 
-export default multer({ storage, limits: {fileSize: 1000000} });
+export default multer({
+  storage: storage,
+  limits: {fileSize: 1000000}
+});
