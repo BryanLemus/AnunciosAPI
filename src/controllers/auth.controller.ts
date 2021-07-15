@@ -14,8 +14,8 @@ function createToken(user: IUser) {
 }
 
 export const register = async (
-  res: Response,
-  req: Request
+  req: Request,
+  res: Response
 ): Promise<Response> => {
   // Get body objects
   const { email, username, password, confirmPassword } = req.body;
@@ -66,7 +66,7 @@ export const register = async (
   return res.status(201).json(newUser);
 };
 
-export const login = async (res: Response, req: Request) => {
+export const login = async (req: Request, res: Response) => {
   if (!req.body.email || !req.body.username) {
     return res.status(400).json({ msg: "Please enter the email or username" });
   }
